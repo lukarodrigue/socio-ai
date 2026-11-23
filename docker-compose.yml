@@ -1,0 +1,38 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: socio
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-troque-esta-senha}
+      POSTGRES_DB: socio_ia
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U socio -d socio_ia"]
+      interval: 5s
+      retries: 10
+
+  # Opcional no Beta: só é usado para escrever o texto do relatório do Dono.
+  # Sem ele, o relatório sai em modelo fixo. Ative com: docker compose --profile llm up
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["llm"]
+    volumes:
+      - ollama:/root/.ollama
+
+  api:
+    build: .
+    environment:
+      SOCIO_DATABASE_URL: postgresql+psycopg://socio:${POSTGRES_PASSWORD:-troque-esta-senha}@db:5432/socio_ia
+      SOCIO_PLAYBOOK: /app/playbooks/empresa_ficticia.yaml
+      SOCIO_OLLAMA_URL: ${SOCIO_OLLAMA_URL:-}
+      SOCIO_OLLAMA_MODEL: ${SOCIO_OLLAMA_MODEL:-qwen2.5:7b-instruct}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  dbdata:
+  ollama:

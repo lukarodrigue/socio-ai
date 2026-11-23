@@ -1,0 +1,34 @@
+# Playbook da empresa fictícia "Padaria Pão Dourado Ltda"
+# O código é o mesmo para todas as empresas; só este arquivo muda.
+# Qualquer nível definido aqui é limitado pelo teto gravado em código (socio_ia/auditor.py).
+
+empresa:
+  nome: "Padaria Pão Dourado Ltda"
+  cnpj: "12.345.678/0001-90"
+  fuso: "America/Campo_Grande"
+
+aprovadores:
+  - "gestor"
+
+agenda:
+  dono_inicio_dia: "07:00"
+  financeiro_conciliacao: ["09:00", "18:00"]
+  dono_relatorio: "19:00"
+
+financeiro:
+  baixa_automatica_ate: 5000.00      # acima disso, a baixa vai para aprovação
+  tolerancia_centavos: 0.01          # diferença máxima aceita como "valor igual"
+  janela_dias_antes_vencimento: 10
+  janela_dias_depois_vencimento: 45
+  taxa_cartao_contratada: 0.0299     # 2,99% de MDR
+  tolerancia_taxa_cartao: 0.0010     # acima de 3,09% é divergência
+  similaridade_nome_minima: 0.60
+
+# Nível de autonomia por tipo de ação (0 a 4). Valores acima do teto são rebaixados.
+autonomia:
+  baixa_titulo: 3
+  registrar_divergencia: 4
+  sugerir_cobranca: 1
+  resumir_dia: 4
+
+tom_de_voz: "próximo, sem gírias"
