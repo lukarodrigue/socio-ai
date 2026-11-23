@@ -2,7 +2,7 @@
 name = "socio-ia"
 version = "1.0.0b1"
 description = "Sócio IA — time de agentes que trabalha dentro da empresa (versão 1.0 Beta)"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = [
     "fastapi>=0.110",
     "uvicorn>=0.29",
